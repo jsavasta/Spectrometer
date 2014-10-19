@@ -1,0 +1,1059 @@
+package Project;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.lang.Integer;
+import java.lang.Double;
+import java.util.ArrayList;
+import java.util.Random;
+import javax.swing.plaf.basic.BasicArrowButton;
+import javax.swing.*;
+
+public class Spectrometer implements ActionListener, ItemListener, KeyListener 
+{
+	JFrame start, list, control, periodic_table, sim, we_dont_do_math, product;
+	JLabel label, warning, math_label;	
+	Random random = new Random();
+	ArrayList<Integer> marked_x = new ArrayList<Integer>();
+	ArrayList<Integer> marked_y = new ArrayList<Integer>();
+	Color element_colors;
+	JTextField radius_in, voltage_in, magneticfield_in, amount;	
+	int on, current_radius, a, b, c, which_one = 0;
+	double current_mfield, current_voltage;
+	double total = 0.0;
+	JRadioButton period;
+	Font font = new Font("Helvetica", Font.PLAIN, 4); 
+	GridLayout period_grid, need;	
+	JRadioButton unknown;	
+	JPanel intro, list_panel, control_panel, top, per, periodic_panel, math, label_math, graph,
+	fix, final_panel;	
+	JButton first_element, second_element, third_element, fourth_element, fifth_element, sixth_element,seventh_element,
+	eighth_element, nineth_element,tenth_element;
+	JLabel first_element_label, second_element_label, third_element_label, fourth_element_label, fifth_element_label, sixth_element_label, seventh_element_label,
+	eighth_element_label, nineth_element_label,tenth_element_label;
+	JLabel[] elements_label= 
+		{
+			first_element_label, second_element_label, third_element_label, fourth_element_label, fifth_element_label, sixth_element_label,seventh_element_label,
+			eighth_element_label, nineth_element_label,tenth_element_label
+		};
+	JButton[] elements = 
+		{
+			first_element, second_element, third_element, fourth_element, fifth_element, sixth_element,seventh_element,
+			eighth_element, nineth_element,tenth_element
+		};
+	JButton H, He, Li, Be, B, C, N, O, F, Ne, Na, Mg, Al, Si, P, S, Cl, Ar, K, Ca, Sc, 
+	Ti, V, Cr, Mn, Fe, Co, Ni, Cu, Zn, Ga, Ge, As, Se, Br, Kr, Rb, Sr, Y, Zr, Nb, Mo, Tc,
+	Ru, Rh, Pd, Ag, Cd, In, Sn, Sb, Te, I, Xe, Cs, Ba, La, Ce, Pr, Nd, Pm, Sm, Eu, Gd,
+	Tb, Dy, Ho, Er, Tm, Yb, Lu, Hf, Ta, W, Re, Os, Ir, Pt, Au, Hg, Tl, Pb, Bi, Po, At, Rn,
+	Fr, Ra, Ac, Th, Pa, U, Np, Pu, Am, Cm, Bk, Cf, Es, Fm, Md, No, Lr, Rf, Db, Sg, Bh,
+	Hs, Mt, Ds, Rg, Cn, Uut, Fl, Uup, Lv, Uus, Uuo;
+	JLabel _a,_b,_c,_d,_e,_f,_g,_h,_i,_j;
+	JButton add, clear_amount, clear_list, ion, close, update, clear_controls, begin; 
+	BasicArrowButton radius_up, radius_down, mfield_up, mfield_down, efield_up, efield_down;
+	double H_n, He_n ,Li_n , Be_n, B_n, C_n, N_n, O_n, F_n, Ne_n, Na_n, Mg_n, Al_n, Si_n, P_n, S_n, Cl_n, Ar_n, K_n, Ca_n, 
+	Sc_n, Ti_n, V_n, Cr_n, Mn_n, Fe_n, Co_n, Ni_n, Cu_n, Zn_n, Ga_n, Ge_n, As_n, Se_n, Br_n, Kr_n, Rb_n, Sr_n, 
+	Y_n, Zr_n, Nb_n, Mo_n, Tc_n, Ru_n, Rh_n, Pd_n, Ag_n, Cd_n, In_n, Sn_n, Sb_n, Te_n, I_n, Xe_n, Cs_n, Ba_n, 
+	La_n, Ce_n, Pr_n, Nd_n, Pm_n, Sm_n, Eu_n, Gd_n, Tb_n, Dy_n, Ho_n, Er_n, Tm_n, Yb_n, Lu_n, Hf_n, Ta_n, W_n, 
+	Re_n, Os_n, Ir_n, Pt_n, Au_n, Hg_n, Tl_n, Pb_n, Bi_n, Po_n, At_n, Rn_n, Fr_n, Ra_n, Ac_n, Th_n, Pa_n, U_n, 
+	Np_n, Pu_n, Am_n, Cm_n, Bk_n, Cf_n, Es_n, Fm_n, Md_n, No_n, Lr_n, Rf_n, Db_n, Sg_n, Bh_n, Hs_n, Mt_n, Ds_n, Rg_n,
+	Cn_n, Uut_n, Fl_n, Uup_n, Lv_n, Uus_n, Uuo_n;
+	String[] element_charge = 
+		{
+			"1","0","1","2","3","4","5","6","7","8","1","2","3","4","5","6","7","8","1","2","3","2","2","2",
+			"2","2","2","2","1","2","3","2","5","6","7","8","1","2","3","4","3","6","4","3","3","2","1","2","1","2",
+			"5","6","7","8","1","2","3","3","3","3","3","3","2","2",
+			"3","3","3","3","3","3","2","4","5","6","4","3","3","2","1","1","1","2","3","2","7","8","1","2","3","3","4","4","3","3",
+			"3","3","3","3","3","3","3","3","2","4","5","6","4","3","3","2","1","2","3","2","5","6","7","8"
+		};
+	double[] element_mass = 
+		{
+			H_n, He_n ,Li_n , Be_n, B_n, C_n, N_n, O_n, F_n, Ne_n, Na_n, Mg_n, Al_n, Si_n, P_n, S_n, Cl_n, Ar_n, K_n, Ca_n, 
+			Sc_n, Ti_n, V_n, Cr_n, Mn_n, Fe_n, Co_n, Ni_n, Cu_n, Zn_n, Ga_n, Ge_n, As_n, Se_n, Br_n, Kr_n, Rb_n, Sr_n, 
+			Y_n, Zr_n, Nb_n, Mo_n, Tc_n, Ru_n, Rh_n, Pd_n, Ag_n, Cd_n, In_n, Sn_n, Sb_n, Te_n, I_n, Xe_n, Cs_n, Ba_n, 
+			La_n, Ce_n, Pr_n, Nd_n, Pm_n, Sm_n, Eu_n, Gd_n, Tb_n, Dy_n, Ho_n, Er_n, Tm_n, Yb_n, Lu_n, Hf_n, Ta_n, W_n, 
+			Re_n, Os_n, Ir_n, Pt_n, Au_n, Hg_n, Tl_n, Pb_n, Bi_n, Po_n, At_n, Rn_n, Fr_n, Ra_n, Ac_n, Th_n, Pa_n, U_n, 
+			Np_n, Pu_n, Am_n, Cm_n, Bk_n, Cf_n, Es_n, Fm_n, Md_n, No_n, Lr_n, Rf_n, Db_n, Sg_n, Bh_n, Hs_n, Mt_n, Ds_n, Rg_n,
+			Cn_n, Uut_n, Fl_n, Uup_n, Lv_n, Uus_n, Uuo_n
+		};
+	String[] element_mass_name = 
+		{
+			"1.008", "4.002602", "6.94", "9.012182", "10.81", "12.011", "14.007", "15.999", "18.9984032",
+			"20.1797", "22.98976928", "24.305", "26.9815386", "28.085", "30.973762", "32.06", "35.45", "39.948", "39.0983",
+			"40.078", "44.955912", "47.867", "50.9415", "51.9961", "54.938045", "55.845", "58.933195", "58.6934", "63.546", 
+			"65.38", "69.723", "72.630", "74.92160", "78.96", "79.904", "83.798", "85.4678", "87.62", "88.90585", "91.224", 
+			"92.90638", "95.96", "98", "101.07", "102.90550", "106.42", "107.8682", "112.411", "114.818", "118.710", "121.760",
+			"127.60", "126.90447", "131.293", "132.9054519", "137.327", "138.90547", "140.116", "140.90765", "144.242", "145",
+			"150.36", "151.964", "157.25", "158.92535", "162.500", "164.93032", "167.259", "168.93421", "173.054", "174.9668",
+			"178.49", "180.94788", "183.84", "186.207", "190.23", "192.217", "195.084", "196.966569", "200.592", "204.38",
+			"207.2", "208.98040", "209", "210", "222", "223", "226", "227", "232.03806", "231.03588", "238.02891", "237",
+			"244", "243", "247", "247", "251", "252", "257", "258", "259", "262", "267", "268", "269", "270", "269", "278", 
+			"281", "281", "285", "286", "289", "288", "293", "294", "294"
+		};
+	JLabel[][] graphic = new JLabel[150][100];
+	JLabel[] list_label = 
+		{
+			_a,_b,_c,_d,_e,_f,_g,_h,_i,_j
+		};
+	double [] raidi;
+	String[] list_string = 
+		{
+			" 1. ", " 2. ", " 3. ", " 4. ", " 5. ", " 6. ", " 7. ", " 8. "," 9. ", " 10. "
+		};
+
+	double[] percent = 
+		{0,0,0,0,0,0,0,0,0,0};
+	int[] find = 
+		{0,0,0,0,0,0,0,0,0,0};
+	String[] element_entered = new String[10];
+	JButton[] abb = 
+		{ 
+			H, He ,Li , Be, B, C, N, O, F, Ne, Na, Mg, Al, Si, P, S, Cl, Ar, K, Ca, 
+			Sc, Ti, V, Cr, Mn, Fe, Co, Ni, Cu, Zn, Ga, Ge, As, Se, Br, Kr, Rb, Sr, 
+			Y, Zr, Nb, Mo, Tc, Ru, Rh, Pd, Ag, Cd, In, Sn, Sb, Te, I, Xe, Cs, Ba, 
+			La, Ce, Pr, Nd, Pm, Sm, Eu, Gd, Tb, Dy, Ho, Er, Tm, Yb, Lu, Hf, Ta, W, 
+			Re, Os, Ir, Pt, Au, Hg, Tl, Pb, Bi, Po, At, Rn, Fr, Ra, Ac, Th, Pa, U, 
+			Np, Pu, Am, Cm, Bk, Cf, Es, Fm, Md, No, Lr, Rf, Db, Sg, Bh, Hs, Mt, Ds, Rg,
+			Cn, Uut, Fl, Uup, Lv, Uus, Uuo
+		};
+	String[] name = 
+		{ 
+			"H", "He" ,"Li" , "Be", "B", "C", "N", "O", "F", "Ne", "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar", "K", "Ca", 
+			"Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se", "Br", "Kr", "Rb", "Sr", 
+			"Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe", "Cs", "Ba", 
+			"La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu", "Hf", "Ta", "W", 
+			"Re", "Os", "Ir", "Pt", "Au", "Hg", "Tl", "Pb", "Bi", "Po", "At", "Rn", "Fr", "Ra", "Ac", "Th", "Pa", "U", 
+			"Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr", "Rf", "Db", "Sg", "Bh", "Hs", "Mt", "Ds", "Rg",
+			"Cn", "Uut", "Fl", "Uup", "Lv", "Uus", "Uuo"
+		};
+
+	String[] real_name = 
+		{ 
+			"Hydrogen", "Helium", "Lithium", "Beryllium", "Boron", "Carbon", "Nitrogen", "Oxygen",
+			"Fluorine", "Neon", "Sodium", "Magnesium", "Aluminum", "Silicon", "Phosphorus", "Sulfur",
+			"Chlorine", "Argon", "Potassium", "Calcium", "Scandium", "Titanium", "Vanadium", "Chromium", 
+			"Manganese", "Iron", "Cobalt", "Nickel", "Copper", "Zinc", "Gallium", "Germanium", "Arsenic",
+			"Selenium", "Bromine", "Krypton", "Rubidium", "Strontium", "Yttrium", "Zirconium", "Niobium",
+			"Molybdenum", "Technetium", "Ruthenium", "Rhodium", "Palladium", "Silver", "Cadmium", "Indium",
+			"Tin", "Antimony", "Tellurium", "Iodine", "Xenon", "Cesium", "Barium", "Lanthanum", "Cerium",
+			"Praseodymium", "Neodymium", "Promethium", "Samarium", "Europium", "Gadolinium", "Terbium",
+			"Dysprosium", "Holmium", "Erbium", "Thulium", "Ytterbium", "Lutetium", "Hafnium", "Tantalum",
+			"Tungsten", "Rhenium", "Osmium", "Iridium", "Platinum", "Gold", "Mercury", "Thallium", "Lead",
+			"Bismuth", "Polonium", "Astatine", "Radon", "Francium", "Radium", "Actinium", "Thorium", "Protactinium",
+			"Uranium", "Neptunium", "Plutonium", "Americium", "Curium", "Berkelium", "Californium", "Einsteinium",
+			"Fermium", "Mendelevium", "Nobelium", "Lawrencium", "Rutherfordium", "Dubnium", "Seaborgium",
+			"Bohrium", "Hassium", "Meitnerium", "Darmstadtium", "Roentgenium", "Copernicium", "Ununtrium",
+			"Flerovium", "Ununpentium", "Livermorium", "Ununseptium", "Ununoctium"
+		};
+	String[] math_names = 
+		{
+			"Newton's Law", "F = ma", "Force of Magnetic Field", "F = qv x B", "Simplify", "F = qvBsin(90)",  "Circular Motion", 
+			"v^2/r","Substitute", "m(v^2/r) = qvB", "Solve for r", "r = mv/qB",
+			"Kinetic Energy", "KE = 1/2mv^2", "Energy of Accerlating Voltage", "qV", "Solving for Velocity", "v = sqrt(2qV/m)",  "Substitue in", 
+			"r = sqrt(2mV/q)/B"
+		};
+	ButtonGroup type;
+	Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+
+	public Spectrometer()
+	{
+		period();
+		convert();
+	}
+
+	public void start()
+	{
+		start = new JFrame();
+		intro = new JPanel();
+
+		//Buttons
+		period = new JRadioButton("By Periodic Table");
+		unknown = new JRadioButton("By Unknown Element");
+
+		//Item Listeners.
+		period.addItemListener(this);
+		unknown.addItemListener(this);
+
+		type = new ButtonGroup();
+
+		type.add(period);
+		type.add(unknown);
+
+		intro.add(new JLabel("How would you like to input sample?"));
+		intro.add(period);
+		intro.add(unknown);
+
+		start.add(intro);
+		start.setBackground(Color.WHITE);
+		//Frame operations.
+		start.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//start.setPreferredSize(new Dimension(200,210));
+		start.setTitle("Welcome");
+		start.setResizable(false);
+		start.setVisible(true);	
+		start.pack();
+	}
+	public void controls()
+	{
+		control = new JFrame();
+		control_panel = new JPanel(new GridLayout (4,5));
+		radius_in = new JTextField();
+		voltage_in = new JTextField();
+		magneticfield_in = new JTextField();
+		begin = new JButton("Start");
+
+
+		radius_in.setText("0");
+		voltage_in.setText("0");
+		magneticfield_in.setText("0");
+
+		radius_in.addKeyListener(this);
+		voltage_in.addKeyListener(this);
+		magneticfield_in.addKeyListener(this);
+
+		radius_up = new BasicArrowButton(BasicArrowButton.NORTH);
+		mfield_up = new BasicArrowButton(BasicArrowButton.NORTH);
+		efield_up = new BasicArrowButton(BasicArrowButton.NORTH);
+
+		radius_down = new BasicArrowButton(BasicArrowButton.SOUTH);
+		mfield_down = new BasicArrowButton(BasicArrowButton.SOUTH);
+		efield_down = new BasicArrowButton(BasicArrowButton.SOUTH);
+
+		radius_up.addActionListener(this);
+		mfield_up.addActionListener(this);
+		efield_up.addActionListener(this);
+		radius_down.addActionListener(this);
+		mfield_down.addActionListener(this);
+		efield_down.addActionListener(this);
+
+		control_panel.add(new JLabel("Voltage:"));
+		control_panel.add(voltage_in);
+		control_panel.add(new JLabel("V"));
+		control_panel.add(efield_up);
+		control_panel.add(efield_down);
+
+		control_panel.add(new JLabel("Magnetic Field:"));
+		control_panel.add(magneticfield_in);
+		control_panel.add(new JLabel("T"));
+		control_panel.add(mfield_up);
+		control_panel.add(mfield_down);
+
+		control_panel.add(new JLabel("Plate:"));
+		control_panel.add(radius_in);
+		control_panel.add(new JLabel("m"));
+		control_panel.add(radius_up);
+		control_panel.add(radius_down);
+
+		update = new JButton("Update");
+		update.addActionListener(this);
+		control_panel.add(update);
+
+		begin.addActionListener(this);
+		control_panel.add(begin);
+
+		clear_controls = new JButton("Clear");
+		clear_controls.addActionListener(this);
+
+
+		warning = new JLabel("");
+		control_panel.add(warning);
+
+		control_panel.add(clear_controls);
+
+		control.add(control_panel);
+
+
+		control.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		control.setPreferredSize(new Dimension(500,130));
+		control.setTitle("Controls");
+		control.setResizable(false);
+		control.setVisible(true);	
+		control.setLocation((dim.width/2)+180, (dim.height/2)-360);
+		control.pack();
+
+	}
+	public void period()
+	{
+		periodic_table = new JFrame();
+		periodic_panel = new JPanel();
+		top = new JPanel();
+		per = new JPanel();
+		per.setLayout(new BoxLayout(per, BoxLayout.Y_AXIS));
+		amount = new JTextField();
+		amount.setText("");
+		label = new JLabel("");
+		clear_amount = new JButton("Clear");
+		add = new JButton("Add");
+		add.addActionListener(this);
+		clear_amount.addActionListener(this);
+		need = new GridLayout(1,4);
+		top.setLayout(need);
+		top.add(amount);
+		top.add(label);
+		top.add(add);
+		top.add(clear_amount);
+		period_grid =  new GridLayout(9,18);
+		periodic_panel.setLayout(period_grid);
+		amount.addKeyListener(this);
+
+
+		buttons();
+		per.add(top);
+		per.add(periodic_panel);
+
+		periodic_table.add(per);
+
+
+		periodic_table.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		periodic_table.setBackground(Color.WHITE);
+		periodic_table.setPreferredSize(new Dimension(800,400));
+		periodic_table.setTitle("Periodic Table");
+		periodic_table.setResizable(false);
+		periodic_table.setVisible(true);	
+		periodic_table.setLocation(8, (dim.height/2)-250);
+		periodic_table.pack();
+		list();
+
+	}
+	public void list()
+	{
+		list = new JFrame();
+		list_panel = new JPanel(new GridLayout(13,1));
+		ion = new JButton("Ionize");
+		ion.addActionListener(this);
+		close = new JButton("Close");
+		close.addActionListener(this);
+		for(int j = 0; j < 10; j++)
+		{
+			list_label[j] = new JLabel(list_string[j]);
+			list_panel.add(list_label[j]);
+		}
+		clear_list = new JButton("Clear");
+		clear_list.addActionListener(this);
+		list_panel.add(ion);
+		list_panel.add(clear_list);
+		list_panel.add(close);
+		list.add(list_panel);
+		list.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		list.setPreferredSize(new Dimension(200,350));
+		list.setTitle("Components");
+		list.setResizable(false);
+		list.setVisible(true);	
+		list.setLocation((dim.width/2)+180, (dim.height/2)-230);
+		list.pack();
+	}
+	boolean added;
+	public void list_add()
+	{
+		added = false;
+		if( on >= 10)
+			label.setText("Max of 10");
+		else if(label.getText().equalsIgnoreCase("") || label.getText().equalsIgnoreCase("Max of 10")
+				|| label.getText().equalsIgnoreCase("Enter A Number")|| label.getText().equalsIgnoreCase("Select an Element")
+				|| label.getText().equalsIgnoreCase("Positive Numbers Only"))
+			label.setText("Select an Element");
+		else
+		{
+			try
+			{
+				percent[on] = Integer.parseInt(amount.getText());
+				if(Integer.parseInt(amount.getText()) <= 0)
+				{
+					label.setText("Positive Numbers Only");
+				}
+				else
+				{
+					for(int j = 0; j < on; j++)
+					{
+						if(element_entered[j].equalsIgnoreCase(label.getText()))
+						{
+							percent[j] = percent[j] + Integer.parseInt(amount.getText());
+							list_label[j].setText(list_string[j] +(int) percent[j] + element_entered[j]);
+							added = true;
+						}
+					}
+					if(!added)
+					{
+						element_entered[on] = label.getText();
+						find[on] = which_one;
+						for(int j = 0; j < on+1; j++)
+							list_label[j].setText(list_string[j] +(int) percent[j] + element_entered[j]);
+						on++;
+					}
+				}
+			}
+			catch(NumberFormatException x)
+			{
+				label.setText("Enter A Number");
+			}
+		}
+	}
+	public void update()
+	{
+		warning.setText("");
+		try
+		{
+			Integer.parseInt(radius_in.getText());
+			Double.parseDouble(magneticfield_in.getText());
+			Double.parseDouble(voltage_in.getText());
+
+			if(Integer.parseInt(radius_in.getText()) > current_radius)
+			{
+				if(Integer.parseInt(radius_in.getText()) > 150)
+				{
+					for(int j = 149; j >= 0; j--)
+						graphic[j][35].setBackground(Color.BLACK);
+				}
+				else
+				{
+					for(int j = 149; j >= 150-Integer.parseInt(radius_in.getText()); j--)
+						graphic[j][35].setBackground(Color.BLACK);
+				}
+			}
+			if(Integer.parseInt(radius_in.getText()) < current_radius)
+			{
+				if(Integer.parseInt(radius_in.getText()) <= 0)
+				{
+					for(int j = 0; j <= 149; j++)
+						graphic[j][35].setBackground(Color.WHITE);
+				}
+				else
+				{
+					for(int j = 0; j <= 149-Integer.parseInt(radius_in.getText()); j++)
+						graphic[j][35].setBackground(Color.WHITE);
+				}
+			}
+			current_radius = Integer.parseInt(radius_in.getText());
+			current_mfield = Double.parseDouble(magneticfield_in.getText());
+			current_voltage = Double.parseDouble(voltage_in.getText());
+		}
+		catch(NumberFormatException x)
+		{
+			if(radius_in.getText().isEmpty())
+				radius_in.setText("0");
+			if(voltage_in.getText().isEmpty())
+				voltage_in.setText("0");
+			if(magneticfield_in.getText().isEmpty())
+				magneticfield_in.setText("0");
+			if(!magneticfield_in.getText().isEmpty() && !radius_in.getText().isEmpty() &&
+					!voltage_in.getText().isEmpty() && !radius_in.getText().equalsIgnoreCase("0") && 
+					!magneticfield_in.getText().equalsIgnoreCase("0") && !voltage_in.getText().equalsIgnoreCase("0"))
+				warning.setText("Enter A Number");
+		}
+
+	}
+
+	public void do_sim()
+	{
+		sim = new JFrame();
+		fix = new JPanel();
+		fix.setLayout(new BoxLayout(fix, BoxLayout.X_AXIS));
+		math = new JPanel();
+		graph = new JPanel(new GridLayout(100,150));
+
+		for(int y = 0; y < 100; y++)
+		{
+			for(int x=0; x < 150; x++)
+			{
+				graphic[x][y] = new JLabel();
+				graphic[x][y].setBackground(Color.WHITE);
+				graphic[x][y].setText("");
+				graphic[x][y].setOpaque(true);
+				graph.add(graphic[x][y]);
+			}
+		}
+		fix.add(graph);
+		sim.add(fix);
+		sim.setBackground(Color.WHITE);
+		sim.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		sim.setPreferredSize(new Dimension((int)dim.getWidth()/2, (int)dim.getHeight()));
+		sim.setTitle("Spectrometer");
+		sim.setVisible(true);	
+		sim.pack();
+		sim.setResizable(false);
+		do_final();
+		controls();
+		//solve();
+
+	}
+	public void solve()
+	{
+		we_dont_do_math = new JFrame();
+		math = new JPanel(new GridLayout(math_names.length/2,2));
+		for(int j = 0; j < math_names.length; j = j+2)
+		{
+			math_label = new JLabel(math_names[j], JLabel.TRAILING);
+			math_label.setFont (math_label.getFont ().deriveFont (12.0f));
+			math.add(math_label);
+
+			math_label = new JLabel(math_names[j+1], JLabel.LEADING);
+			math_label.setFont (math_label.getFont ().deriveFont (12.0f));
+			math.add(math_label);
+		}
+
+		we_dont_do_math.add(math);
+		we_dont_do_math.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//we_dont_do_math.setPreferredSize(new Dimension((int)dim.getWidth()/2, (int)dim.getHeight()));
+		//we_dont_do_math.setTitle("Spectrometer");
+		//we_dont_do_math.setResizable(false);
+		we_dont_do_math.setVisible(true);	
+		we_dont_do_math.pack();
+	}
+	public void keyPressed(KeyEvent arg0) 
+	{
+
+
+	}
+
+
+	public void keyReleased(KeyEvent arg0) 
+	{
+
+
+	}
+
+
+	public void keyTyped(KeyEvent arg0)
+	{
+		if(arg0.getKeyChar() == KeyEvent.VK_ENTER)
+		{
+			update();
+			graph();
+		}
+
+	}
+
+
+	public void itemStateChanged(ItemEvent e) {
+		if(e.getSource() == period)
+			period();
+
+
+	}
+	public void mass(int number)
+	{
+		if(number == 0 && find[number] != 0 && caught_raidi[number] != 0)
+		{
+			first_element_label.setText(Double.toString((int)(Math.round((Double.parseDouble(element_charge[find[number]])*1.6*Math.pow(10, -19)*Math.pow(Double.parseDouble(magneticfield_in.getText())*caught_raidi[number], 2))/(2*Double.parseDouble(voltage_in.getText()))/(element_mass[find[number]]*Math.pow(10,  -27))))) +"u " + real_name[find[number]]);	
+			first_element_label.setForeground(element_color[number]);
+		}
+		if(number == 1 && find[number] != 0 && caught_raidi[number] != 0)
+		{
+			second_element_label.setText(Double.toString((int)(Math.round((Double.parseDouble(element_charge[find[number]])*1.6*Math.pow(10, -19)*Math.pow(Double.parseDouble(magneticfield_in.getText())*caught_raidi[number], 2))/(2*Double.parseDouble(voltage_in.getText()))/(element_mass[find[number]]*Math.pow(10,  -27))))) +"u " + real_name[find[number]]);
+			second_element_label.setForeground(element_color[number]);
+		}
+		if(number == 2 && find[number] != 0 && caught_raidi[number] != 0)
+		{
+			third_element_label.setText(Double.toString((int)(Math.round((Double.parseDouble(element_charge[find[number]])*1.6*Math.pow(10, -19)*Math.pow(Double.parseDouble(magneticfield_in.getText())*caught_raidi[number], 2))/(2*Double.parseDouble(voltage_in.getText()))/(element_mass[find[number]]*Math.pow(10,  -27))))) +"u " + real_name[find[number]]);
+			third_element_label.setForeground(element_color[number]);
+		}
+		if(number == 3 && find[number] != 0 && caught_raidi[number] != 0)
+		{
+			fourth_element_label.setText(Double.toString((int)(Math.round((Double.parseDouble(element_charge[find[number]])*1.6*Math.pow(10, -19)*Math.pow(Double.parseDouble(magneticfield_in.getText())*caught_raidi[number], 2))/(2*Double.parseDouble(voltage_in.getText()))/(element_mass[find[number]]*Math.pow(10,  -27))))) +"u "+ real_name[find[number]]);
+			fourth_element_label.setForeground(element_color[number]);
+		}
+
+		if(number == 4 && find[number] != 0 && caught_raidi[number] != 0)
+		{
+			fifth_element_label.setText(Double.toString((int)(Math.round((Double.parseDouble(element_charge[find[number]])*1.6*Math.pow(10, -19)*Math.pow(Double.parseDouble(magneticfield_in.getText())*caught_raidi[number], 2))/(2*Double.parseDouble(voltage_in.getText()))/(element_mass[find[number]]*Math.pow(10,  -27))))) +"u "+ real_name[find[number]]);
+			fifth_element_label.setForeground(element_color[number]);
+		}
+		if(number == 5 && find[number] != 0 && caught_raidi[number] != 0)
+		{
+			sixth_element_label.setText(Double.toString((int)(Math.round((Double.parseDouble(element_charge[find[number]])*1.6*Math.pow(10, -19)*Math.pow(Double.parseDouble(magneticfield_in.getText())*caught_raidi[number], 2))/(2*Double.parseDouble(voltage_in.getText()))/(element_mass[find[number]]*Math.pow(10,  -27))))) +"u "+ real_name[find[number]]);
+			sixth_element_label.setForeground(element_color[number]);
+		}
+		if(number == 6 && find[number] != 0 && caught_raidi[number] != 0)
+		{
+			seventh_element_label.setText(Double.toString((int)(Math.round((Double.parseDouble(element_charge[find[number]])*1.6*Math.pow(10, -19)*Math.pow(Double.parseDouble(magneticfield_in.getText())*caught_raidi[number], 2))/(2*Double.parseDouble(voltage_in.getText()))/(element_mass[find[number]]*Math.pow(10,  -27))))) +"u "+ real_name[find[number]]);
+			eighth_element_label.setForeground(element_color[number]);
+		}
+		if(number == 7 && find[number] != 0 && caught_raidi[number] != 0)
+		{
+			eighth_element_label.setText(Double.toString((int)(Math.round((Double.parseDouble(element_charge[find[number]])*1.6*Math.pow(10, -19)*Math.pow(Double.parseDouble(magneticfield_in.getText())*caught_raidi[number], 2))/(2*Double.parseDouble(voltage_in.getText()))/(element_mass[find[number]]*Math.pow(10,  -27))))) +"u "+ real_name[find[number]]);
+			eighth_element_label.setForeground(element_color[number]);
+		}
+		if(number == 8 && find[number] != 0 && caught_raidi[number] != 0)
+		{
+			nineth_element_label.setText(Double.toString((int)(Math.round((Double.parseDouble(element_charge[find[number]])*1.6*Math.pow(10, -19)*Math.pow(Double.parseDouble(magneticfield_in.getText())*caught_raidi[number], 2))/(2*Double.parseDouble(voltage_in.getText()))/(element_mass[find[number]]*Math.pow(10,  -27))))) +"u "+ real_name[find[number]]);
+			nineth_element_label.setForeground(element_color[number]);
+		}
+		if(number == 9 && find[number] != 0 && caught_raidi[number] != 0)
+		{
+			tenth_element_label.setText(Double.toString((int)(Math.round((Double.parseDouble(element_charge[find[number]])*1.6*Math.pow(10, -19)*Math.pow(Double.parseDouble(magneticfield_in.getText())*caught_raidi[number], 2))/(2*Double.parseDouble(voltage_in.getText()))/(element_mass[find[number]]*Math.pow(10,  -27))))) +"u "+ real_name[find[number]]);
+			tenth_element_label.setForeground(element_color[number]);
+		}
+	}
+
+	public void actionPerformed(ActionEvent e)
+	{
+		if(e.getSource() == first_element)
+		{
+			mass(0);
+		}
+		if(e.getSource() == second_element)
+		{
+			mass(1);
+		}
+		if(e.getSource() == third_element)
+		{
+			mass(2);
+		}
+		if(e.getSource() == fourth_element)
+		{
+			mass(3);
+		}
+		if(e.getSource() == fifth_element)
+		{
+			mass(4);
+		}
+		if(e.getSource() == sixth_element)
+		{
+			mass(5);
+		}
+		if(e.getSource() == seventh_element)
+		{
+			mass(6);
+		}
+		if(e.getSource() == eighth_element)
+		{
+			mass(7);
+		}
+		if(e.getSource() == nineth_element)
+		{
+			mass(8);
+		}
+		if(e.getSource() == tenth_element)
+		{
+			mass(9);
+		}
+		else if(e.getSource() == begin)
+		{
+			graph();
+		}
+		else if(e.getSource() == efield_down)
+		{
+			if(voltage_in.getText().isEmpty())
+				voltage_in.setText("0");
+			voltage_in.setText(Integer.toString(Integer.parseInt(voltage_in.getText())-1));
+		}
+		else if(e.getSource() == efield_up)
+		{
+			if(voltage_in.getText().isEmpty())
+				voltage_in.setText("0");
+			voltage_in.setText(Integer.toString(Integer.parseInt(voltage_in.getText())+1));
+		}
+		else if(e.getSource() == mfield_down)
+		{
+			if(magneticfield_in.getText().isEmpty())
+				magneticfield_in.setText("0");
+			magneticfield_in.setText(Integer.toString(Integer.parseInt(magneticfield_in.getText())-1));
+		}
+		else if(e.getSource() == mfield_up)
+		{
+			if(magneticfield_in.getText().isEmpty())
+				magneticfield_in.setText("0");
+			magneticfield_in.setText(Integer.toString(Integer.parseInt(magneticfield_in.getText())+1));
+		}
+		else if(e.getSource() == radius_up)
+		{
+			if(radius_in.getText().isEmpty())
+				radius_in.setText("0");
+			radius_in.setText(Integer.toString(Integer.parseInt(radius_in.getText())+1));
+			update();
+		}
+		else if(e.getSource() == radius_down)
+		{
+			if(radius_in.getText().isEmpty())
+				radius_in.setText("0");
+			radius_in.setText(Integer.toString(Integer.parseInt(radius_in.getText())-1));
+			update();
+		}
+		else if(e.getSource() == clear_controls)
+		{
+			radius_in.setText("0");
+			magneticfield_in.setText("0");
+			voltage_in.setText("0");
+			warning.setText("");
+			clear();
+			update();
+		}
+		else if(e.getSource() == update)
+			update();
+		else if(e.getSource() == ion)
+			do_sim();
+		else if(e.getSource() == close)
+			System.exit(0);
+		else if(e.getSource() == clear_list)
+		{
+			clear_in();
+			for(int j = 0; j < 10; j++)
+				list_label[j].setText(list_string[j]);
+			on = 0;
+		}
+		else if(e.getSource() == clear_amount)
+			clear_in();
+		else if(e.getSource() == add)
+			list_add();
+		else
+		{
+			for(int j = 0; j < 118; j++)
+			{
+				if(e.getSource() == abb[j])
+				{
+					label.setText("u " + real_name[j]);
+					which_one = j;
+				}
+			}
+		}
+	}
+	public void clear_in()
+	{
+		label.setText("");
+		amount.setText("");
+	}
+	public void buttons()
+	{
+		abb[0] = new JButton(name[0]);
+		abb[0].addActionListener(this);
+
+		periodic_panel.add(abb[0]);
+
+		for(int j = 0; j < 16; j++)
+			periodic_panel.add(new JLabel(""));	
+
+		for(int j = 1; j < 4; j++)
+		{
+			abb[j] = new JButton(name[j]);
+			abb[j].addActionListener(this);
+			periodic_panel.add(abb[j]);
+		}
+
+		for(int j = 0; j < 10; j++)
+			periodic_panel.add(new JLabel(""));
+
+		for(int j = 4; j < 12; j++)
+		{
+			abb[j] = new JButton(name[j]);
+			abb[j].addActionListener(this);
+			periodic_panel.add(abb[j]);
+		}
+
+		for(int j = 0; j < 10; j++)
+			periodic_panel.add(new JLabel(""));
+
+		for(int j = 12; j < 57; j++)
+		{
+			abb[j] = new JButton(name[j]);
+			abb[j].addActionListener(this);
+			periodic_panel.add(abb[j]);
+		}
+		for(int j = 71; j < 89; j++)
+		{
+			abb[j] = new JButton(name[j]);
+			abb[j].addActionListener(this);
+			periodic_panel.add(abb[j]);
+		}
+
+		for(int j = 103; j < 118; j++)
+		{
+			abb[j] = new JButton(name[j]);
+			abb[j].addActionListener(this);
+			periodic_panel.add(abb[j]);
+		}
+
+		for(int j = 0; j < 2; j++)
+			periodic_panel.add(new JLabel(""));
+
+		for(int j = 57; j < 71; j++)
+		{
+			abb[j] = new JButton(name[j]);
+			abb[j].addActionListener(this);
+			periodic_panel.add(abb[j]);
+		}
+
+		for(int j = 0; j < 4; j++)
+			periodic_panel.add(new JLabel(""));
+
+		for(int j = 89; j < 103; j++)
+		{
+			abb[j] = new JButton(name[j]);
+			abb[j].addActionListener(this);
+			periodic_panel.add(abb[j]);
+		}
+
+		for(int j = 0; j < 2; j++)
+			periodic_panel.add(new JLabel(""));
+
+		for(int j = 0; j < 118; j++)
+		{
+			abb[j].setOpaque(true);
+			if(j == 0)
+				abb[j].setBackground(Color.YELLOW);
+			else if(j == 2 ||j == 10 ||j == 18 ||j == 36 ||j == 54 ||j == 86)
+				abb[j].setBackground(new Color(221,160,221));
+			else if(j == 3 ||j == 11 ||j == 19 ||j == 37 ||j == 55 ||j == 87)
+				abb[j].setBackground(new Color(95,158,160));
+			else if(j == 1 ||j == 9 ||j == 17 ||j == 35 ||j == 53 || j == 85 ||j == 117)
+				abb[j].setBackground(new Color(147,112,219));
+			else if(j == 8 ||j == 16 ||j == 34 ||j == 52 ||j == 84 || j == 116)
+				abb[j].setBackground(new Color(205,175,149));
+			else if(j == 5 ||j == 6 ||j == 7 ||j == 14 ||j == 15 || j == 33)
+				abb[j].setBackground(new Color(60,179,113));
+			else if(j == 4 ||j == 13 ||j == 31 || j == 32 ||j == 50 ||j == 51)
+				abb[j].setBackground(new Color(240,230,140));
+			else if(j == 12 ||j == 30 ||j == 48 ||j == 49 || j == 80 ||j == 81 ||j == 82
+					||j == 83 ||j == 112 ||j == 113 ||j == 114 ||j == 115)
+				abb[j].setBackground(new Color(135,206,250));
+			else if(j >= 57 && j <=70)
+				abb[j].setBackground(new Color(240,128,128));
+			else if(j >= 89 && j <=102)
+				abb[j].setBackground(new Color(240,128,128));
+			else
+				abb[j].setBackground(new Color(255,182,193));
+		}
+	}
+	boolean height_reached = false;
+	boolean raidi_reached = false;
+	double[] caught_raidi = new double[10];
+	Color[] element_color = new Color[10];
+	public void clear()
+	{
+		for(int y=0; y<100; y++)
+		{
+			for(int x=0; x<150; x++)
+			{
+				graphic[x][y].setBackground(Color.WHITE);
+			}
+		}
+		current_radius = 0;
+		update();
+	}
+	public void graph()
+	{
+		raidi = new double[on+1];
+		double height;
+		int currentx = 5;
+		int currenty = 35;
+		clear();
+		warning.setText("");
+		first_element_label.setText("");
+		second_element_label.setText("");
+		third_element_label.setText("");
+		fourth_element_label.setText("");
+		fifth_element_label.setText("");
+		sixth_element_label.setText("");
+		seventh_element_label.setText("");
+		eighth_element_label.setText("");
+		nineth_element_label.setText("");
+		tenth_element_label.setText("");
+		for(int j = 0; j < 10; j++)
+			caught_raidi[j] = 0;
+		if(magneticfield_in.getText().isEmpty() || radius_in.getText().isEmpty() ||
+				voltage_in.getText().isEmpty() || radius_in.getText().equalsIgnoreCase("0") || 
+				magneticfield_in.getText().equalsIgnoreCase("0") || voltage_in.getText().equalsIgnoreCase("0"))
+			warning.setText("Enter A Number");
+		else if(Double.parseDouble(magneticfield_in.getText()) <= 0 || Double.parseDouble(voltage_in.getText()) <= 0
+				|| Double.parseDouble(radius_in.getText()) <= 0)
+		{
+			warning.setText("Positive Numbers Only");
+		}
+		else
+		{
+			for(int j = 0; j < on; j++)
+			{
+				raidi[j] = (1/Double.parseDouble(magneticfield_in.getText()))*Math.sqrt(((Math.pow(10, -27))*2.0*element_mass[find[j]]*percent[j]*
+						(Double.parseDouble(voltage_in.getText())))/(Math.pow(10, -19)*1.6*Double.parseDouble(element_charge[find[j]])));
+			}
+			for(int j = 0; j < on; j++)
+			{
+				a = random.nextInt(255);
+				b = random.nextInt(255);
+				c = random.nextInt(255);
+				element_color[j] = new Color(a,b,c);
+				height = (raidi[j]/8.0)+1;
+				for(int k = 99; k > 34; k--)
+				{
+					graphic[5][k].setBackground(element_color[j]);
+				}
+				if(Integer.parseInt(radius_in.getText()) < 145)
+				{
+					if(height > 35)
+					{
+						for(int k = 0; k < 35; k++)
+						{
+							currenty--;
+							graphic[currentx][currenty].setBackground(element_color[j]);
+							for(int l = 0; l < 4; l++)
+							{
+								currentx++;
+								graphic[currentx][currenty].setBackground(element_color[j]);
+							}
+						}
+					}
+					else if( raidi[j] + 5 < 150 - Integer.parseInt(radius_in.getText()))
+					{
+						for(int k = 0; k < height-1; k++)
+						{
+							currenty--;
+							graphic[currentx][currenty].setBackground(element_color[j]);
+							for(int l = 0; l < 4; l++)
+							{
+								currentx++;
+								graphic[currentx][currenty].setBackground(element_color[j]);
+							}
+						}
+						for(int k = 0; k < height-1; k++)
+						{
+							currenty++;
+							graphic[currentx][currenty].setBackground(element_color[j]);
+							for(int l = 0; l < 4; l++)
+							{
+								currentx++;
+								graphic[currentx][currenty].setBackground(element_color[j]);
+							}
+						}
+						for(int k = 99; k > 34; k--)
+						{
+							graphic[currentx][k].setBackground(element_color[j]);
+						}
+					}
+					else if( raidi[j] + 5 > 150 )
+					{
+						for(int k = 0; k < height-1; k++)
+						{
+							currenty--;
+							graphic[currentx][currenty].setBackground(element_color[j]);
+							for(int l = 0; l < 4; l++)
+							{
+								currentx++;
+								graphic[currentx][currenty].setBackground(element_color[j]);
+							}
+						}
+						while(currentx+4 < 150)
+						{
+							currenty++;
+							graphic[currentx][currenty].setBackground(element_color[j]);
+							for(int l = 0; l < 4; l++)
+							{
+								currentx++;
+								graphic[currentx][currenty].setBackground(element_color[j]);
+							}
+						}
+					}
+					else
+					{
+						caught_raidi[j] = raidi[j];
+						for(int k = 0; k < height-1; k++)
+						{
+							currenty--;
+							graphic[currentx][currenty].setBackground(element_color[j]);
+							for(int l = 0; l < 4; l++)
+							{
+								currentx++;
+								graphic[currentx][currenty].setBackground(element_color[j]);
+							}
+						}
+						for(int k = 0; k < height-2; k++)
+						{
+
+							currenty++;
+							graphic[currentx][currenty].setBackground(element_color[j]);
+							for(int l = 0; l < 4; l++)
+							{
+								currentx++;
+								graphic[currentx][currenty].setBackground(element_color[j]);
+							}
+						}
+						currenty++;
+						currentx++;
+						graphic[currentx][currenty].setBackground(element_color[j]);
+					}
+					currentx = 5;
+					currenty = 35;
+				}
+			}
+		}
+	}
+	public void do_final()
+	{
+		product = new JFrame();
+		final_panel = new JPanel(new GridLayout(10,2));
+		first_element = new JButton("1.");
+		second_element = new JButton("2.");
+		third_element = new JButton("3.");
+		fourth_element = new JButton("4.");
+		fifth_element = new JButton("5.");
+		sixth_element = new JButton("6.");
+		seventh_element = new JButton("7.");
+		eighth_element = new JButton("8.");
+		nineth_element = new JButton("9.");
+		tenth_element = new JButton("10.");
+
+		first_element.addActionListener(this);
+		second_element.addActionListener(this);
+		third_element.addActionListener(this);
+		fourth_element.addActionListener(this);
+		fifth_element.addActionListener(this);
+		sixth_element.addActionListener(this);
+		seventh_element.addActionListener(this);
+		eighth_element.addActionListener(this);
+		nineth_element.addActionListener(this);
+		tenth_element.addActionListener(this);
+
+		tenth_element_label = new JLabel();
+		nineth_element_label = new JLabel();
+		eighth_element_label = new JLabel();
+		seventh_element_label = new JLabel();
+		sixth_element_label = new JLabel();
+		fifth_element_label = new JLabel();
+		fourth_element_label = new JLabel();
+		third_element_label = new JLabel();
+		second_element_label = new JLabel();
+		first_element_label = new JLabel();
+
+		final_panel.add(first_element);
+		final_panel.add(first_element_label);
+		final_panel.add(second_element);
+		final_panel.add(second_element_label);
+		final_panel.add(third_element);
+		final_panel.add(third_element_label);
+		final_panel.add(fourth_element);
+		final_panel.add(fourth_element_label);
+		final_panel.add(fifth_element);
+		final_panel.add(fifth_element_label);
+		final_panel.add(sixth_element);
+		final_panel.add(sixth_element_label);
+		final_panel.add(seventh_element);
+		final_panel.add(seventh_element_label);
+		final_panel.add(eighth_element);
+		final_panel.add(eighth_element_label);
+		final_panel.add(nineth_element);
+		final_panel.add(nineth_element_label);
+		final_panel.add(tenth_element);
+		final_panel.add(tenth_element_label);
+
+		product.add(final_panel);
+		product.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		product.setPreferredSize(new Dimension(300,350));
+		product.setTitle("Components");
+		product.setResizable(true);
+		product.setVisible(true);	
+		product.setLocation((dim.width/2)+150, (dim.height/2)-200);
+		product.pack();
+
+	}
+	public void convert()
+	{
+		for(int j = 0; j < 118; j++)
+			element_mass[j] = Double.parseDouble(element_mass_name[j]);
+	}
+}
